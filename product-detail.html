@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KVJMRR67');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<title>Electronic Product</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    background:#4f46e5;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+body{
+background:#f4f6f9;
+}
+
+.navbar{
+background:#4f46e5;
+padding:15px 30px;
+color:white;
+display:flex;
+justify-content:space-between;
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
+}
+
+.products{
+max-width:1200px;
+margin:30px auto;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:25px;
+padding:20px;
+}
+
+.card{
+background:white;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-8px);
+}
+
+.card img{
+width:100%;
+height:250px;
+object-fit:cover;
+}
+
+.card-body{
+padding:20px;
+}
+
+.card-body h3{
+color:#4f46e5;
+margin-bottom:10px;
+}
+
+.price{
+font-size:24px;
+font-weight:bold;
+color:#28a745;
+margin:10px 0;
+}
+
+.btn{
+width:100%;
+padding:12px;
+border:none;
+background:#4f46e5;
+color:white;
+border-radius:8px;
+cursor:pointer;
+margin-top:10px;
+}
+
+.btn:hover{
+background:#3730a3;
+}
+
+.nav-link{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+    font-size:16px;
+    font-weight:500;
+}
+
+.details{
+margin-top:10px;
+color:#555;
+line-height:1.6;
+}
+
+</style>
+
+</head>
+
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KVJMRR67"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<div class="navbar">
+<div class="logo">My Shop</div>
+
+<div>
+     <a href="checkout.html" class="nav-link">🛒 Cart(<span id="cartCount">0</span>)</a>
+     <a href="login.html" class="nav-link">🚪 Logout</a>
+ </div>
+</div>
+
+<div class="products" id="products"></div>
+
+<script>
+
+const categories = {
+
+1:[
+
+// LAPTOPS
+
+{
+id:101,
+name:"Dell Inspiron 15",
+price:55000,
+image:"https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600",
+description:"Intel Core i5, 16GB RAM, 512GB SSD",
+size:"15.6 Inch",
+model:"DELL-I15"
+},
+
+{   
+id:102,
+name:"HP Pavilion 15",
+price:62000,
+image:"https://m.media-amazon.com/images/I/71QOEtrh6rL.jpg",
+description:"Intel Core i7, 16GB RAM, 1TB SSD",
+size:"15.6 Inch",
+model:"HP-P15"
+},
+
+{
+id:103,
+name:"Lenovo IdeaPad Slim 5",
+price:58000,
+image:"https://images.unsplash.com/photo-1484788984921-03950022c9ef?w=600",
+description:"AMD Ryzen 7, 16GB RAM",
+size:"15.6 Inch",
+model:"LEN-S5"
+},
+
+{
+id:104,
+name:"ASUS VivoBook 15",
+price:52000,
+image:"https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=600",
+description:"Intel Core i5, 8GB RAM",
+size:"15.6 Inch",
+model:"ASUS-V15"
+},
+
+{
+id:105,
+name:"Acer Aspire 7",
+price:65000,
+image:"https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?w=600",
+description:"Ryzen 7, RTX Graphics",
+size:"15.6 Inch",
+model:"ACER-A7"
+}
+
+],
+
+2:[
+
+// MOBILES
+
+{
+id:201,
+name:"iPhone 15",
+price:75000,
+image:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600",
+description:"128GB Storage, A16 Bionic Chip",
+size:"6.1 Inch",
+model:"IPH15"
+},
+
+{
+id:202,
+name:"Samsung Galaxy S24",
+price:70000,
+image:"https://images.unsplash.com/photo-1567581935884-3349723552ca?w=600",
+description:"256GB Storage, AMOLED Display",
+size:"6.2 Inch",
+model:"SGS24"
+},
+
+{
+id:203,
+name:"OnePlus 12",
+price:65000,
+image:"https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600",
+description:"16GB RAM, Snapdragon Processor",
+size:"6.7 Inch",
+model:"OP12"
+},
+
+{
+id:204,
+name:"Google Pixel 8",
+price:68000,
+image:"https://images.unsplash.com/photo-1580910051074-3eb694886505?w=600",
+description:"AI Camera Features",
+size:"6.2 Inch",
+model:"PIX8"
+},
+
+{
+id:205,
+name:"Xiaomi 14",
+price:55000,
+image:"https://images.unsplash.com/photo-1605236453806-6ff36851218e?w=600",
+description:"Leica Camera Technology",
+size:"6.36 Inch",
+model:"MI14"
+}
+
+],
+
+3:[
+
+// HEADPHONES
+
+{
+id:301,
+name:"Sony WH-1000XM5",
+price:25000,
+image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600",
+description:"Noise Cancelling Headphones",
+size:"Universal",
+model:"SONY-XM5"
+},
+
+{
+id:302,
+name:"JBL Tune 760NC",
+price:8000,
+image:"https://images.unsplash.com/photo-1484704849700-f032a568e944?w=600",
+description:"Wireless Headphones",
+size:"Universal",
+model:"JBL760"
+},
+
+{
+id:303,
+name:"Boat Rockerz 550",
+price:2500,
+image:"https://images.unsplash.com/photo-1572536147248-ac59a8abfa4b?w=600",
+description:"40 Hours Battery Backup",
+size:"Universal",
+model:"BOAT550"
+},
+
+{
+id:304,
+name:"Skullcandy Crusher",
+price:12000,
+image:"https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=600",
+description:"Deep Bass Audio",
+size:"Universal",
+model:"SC-CRUSH"
+},
+
+{
+id:305,
+name:"Beats Studio Pro",
+price:18000,
+image:"https://images.unsplash.com/photo-1545127398-14699f92334b?w=600",
+description:"Premium Wireless Headphones",
+size:"Universal",
+model:"BEATS-PRO"
+}
+
+],
+
+4:[
+
+// SMART WATCHES
+
+{
+id:401,
+name:"Apple Watch Series 9",
+price:42000,
+image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600",
+description:"Advanced Health Tracking",
+size:"45 mm",
+model:"AWS9"
+},
+
+{
+id:402,
+name:"Samsung Galaxy Watch 6",
+price:28000,
+image:"https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=600",
+description:"Fitness Monitoring",
+size:"44 mm",
+model:"GW6"
+},
+
+{
+id:403,
+name:"Noise ColorFit Pro",
+price:3500,
+image:"https://images.unsplash.com/photo-1579586337278-3f436f25d4d6?w=600",
+description:"Budget Smart Watch",
+size:"42 mm",
+model:"NCF-PRO"
+},
+
+{
+id:404,
+name:"Fire-Boltt Ninja",
+price:2500,
+image:"https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=600",
+description:"Bluetooth Calling",
+size:"44 mm",
+model:"FB-NINJA"
+},
+
+{
+id:405,
+name:"Amazfit GTR 4",
+price:16000,
+image:"https://images.unsplash.com/photo-1617043786394-f977fa12eddf?w=600",
+description:"GPS and Health Tracking",
+size:"46 mm",
+model:"GTR4"
+}
+
+],
+
+
+};
+
+const categoryId =
+new URLSearchParams(window.location.search)
+.get("id");
+
+const products =
+categories[categoryId];
+
+let html = "";
+
+products.forEach(product=>{
+
+html += `
+
+<div class="card">
+
+<img src="${product.image}">
+
+<div class="card-body">
+
+<h3>${product.name}</h3>
+
+<div class="price">
+₹${product.price}
+</div>
+
+<div class="details">
+<b>Description:</b> ${product.description}<br>
+<b>Size:</b> ${product.size}<br>
+<b>Model:</b> ${product.model}
+</div>
+
+<button class="btn"
+onclick='addToCart(${JSON.stringify(product)})'>
+Add To Cart
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("products").innerHTML = html;
+function updateCartCount() {
+
+    let cart =
+    JSON.parse(localStorage.getItem("cart"))
+    || [];
+
+    let totalQty = 0;
+
+    cart.forEach(item => {
+        totalQty += item.quantity || 1;
+    });
+
+    const cartCount =
+    document.getElementById("cartCount");
+
+    if(cartCount){
+        cartCount.innerText = totalQty;
+    }
+}
+
+function addToCart(product){
+
+let cart =
+JSON.parse(localStorage.getItem("cart"))
+|| [];
+
+let existing =
+cart.find(item => item.id === product.id);
+
+if(existing){
+
+existing.quantity++;
+
+}else{
+
+cart.push({
+
+id:product.id,
+image:product.image,
+name:product.name,
+price:product.price,
+quantity:1
+
+});
+
+}
+localStorage.setItem(
+"cart",
+JSON.stringify(cart)
+);
+dataLayer.push({
+    event: "add_to_cart",
+    product_name: product.name,
+    price: product.price
+});
+
+updateCartCount();
+
+
+
+function logout(){
+
+    localStorage.removeItem("token");
+
+    alert("Logged Out Successfully");
+    dataLayer.push({
+    event: "logout"
+});
+    window.location.href =
+    "login.html";
+}
+
+
+
+
+
+alert(product.name + " Added To Cart");
+
+}
+
+function goBack(){
+    window.history.back();
+}
+window.addEventListener("pageshow", function () {
+    updateCartCount();
+});
+</script>
+<button class="back-btn" onclick="goBack()">
+    ← Back
+</button>
+
+</body>
+</html>

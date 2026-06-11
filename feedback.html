@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KVJMRR67');</script>
+<!-- End Google Tag Manager -->
+<title>Feedback</title>
+
+<style>
+body{
+     font-family:Arial;
+    background:linear-gradient(135deg,#00c6ff,#0072ff);
+    margin:0;
+    padding-top:80px;
+}
+.logo{
+    font-size:28px;
+    font-weight:bold;
+}
+.form-row{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:15px;
+}
+
+.form-row label{
+   width:140px;
+    font-weight:bold;
+    text-align:right;
+    margin-right:15px;
+}
+
+.form-row input[type="text"],
+.form-row input[type="email"],
+.form-row input[type="tel"]{
+   width:250px;
+    height:35px;
+    padding:5px 10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+.form-row textarea{
+   width:250px;
+    height:100px;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    resize:none;
+}
+.feedback-container{
+    width:550px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+.gender-group{
+       width:250px;
+    display:flex;
+    gap:15px;
+    align-items:center;
+}
+.navbar{
+   position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:60px;
+    background:#4f46e5;
+    color:white;
+    display:flex;
+    align-items:center;
+    padding:0 30px;
+    box-sizing:border-box;
+    z-index:1000;
+}
+button{
+    width:150px;
+    padding:12px;
+    border:none;
+    background:#0072ff;
+    color:white;
+    border-radius:8px;
+    font-size:16px;
+    cursor:pointer;
+    display:block;
+    margin:20px auto;
+}
+</style>
+</head>
+<body>
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KVJMRR67"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+ <div class="navbar">
+    <div class="logo">MyShop</div>
+    </div> 
+
+<div class="feedback-container">
+    <h2> ⭐ Customer Feedback</h2>
+
+    <form id="feedbackForm">
+
+    <div class="form-row">
+        <label>Full Name</label>
+        <input type="text" id="name" required>
+    </div>
+
+    <div class="form-row">
+        <label>Email</label>
+                    <input type="email" id="email" required>
+    </div>
+
+    <div class="form-row">
+        <label>Mobile Number</label>
+        <input type="tel" id="mobile" maxlength="10" required>
+    </div>
+
+    <div class="form-row">
+        <label>Gender</label>
+
+        <div class="gender-group">
+            <input type="radio" name="gender" value="Male"> Male
+            <input type="radio" name="gender" value="Female"> Female
+            <input type="radio" name="gender" value="Other"> Other
+        </div>
+    </div>
+   <br><br>
+    <div class="form-row">
+        <label>Comments</label>
+        <textarea id="comment" rows="4"></textarea>
+    </div>
+
+    <button type="submit">
+        Submit Feedback
+    </button>
+
+</form>
+</div>
+<script>
+
+document.getElementById("feedbackForm")
+.addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    const feedbackData = {
+
+        name:
+        document.getElementById("name").value.trim(),
+
+        email:
+        document.getElementById("email").value.trim(),
+
+        mobile:
+        document.getElementById("mobile").value.trim(),
+
+        gender:
+        document.querySelector(
+        'input[name="gender"]:checked'
+        )?.value,
+
+        comment:
+        document.getElementById("comment").value.trim()
+
+    };
+
+    // Validation
+
+    if(
+        !feedbackData.name ||
+        !feedbackData.email ||
+        !feedbackData.mobile ||
+        !feedbackData.gender ||
+        !feedbackData.comment
+    ){
+
+        alert(
+        "Please fill all fields"
+        );
+
+        return;
+
+    }
+
+    try {
+
+        const response = await fetch(
+            "http://localhost:5000/api/auth/feedback",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                    "application/json"
+                },
+
+                body: JSON.stringify(
+                    feedbackData
+                )
+            }
+        );
+
+        const result =
+        await response.json();
+
+        if(response.ok){
+               dataLayer.push({
+               event: "feedback_submit"
+               });
+            alert(
+            result.message
+            );
+
+            window.location.href =
+            "categories.html";
+
+        }else{
+
+            alert(
+            result.message
+            );
+
+        }
+
+    } catch(error){
+
+        console.error(error);
+
+        alert(
+        "Failed to save feedback"
+        );
+
+    }
+
+});
+
+</script>
+</body>
+</html>

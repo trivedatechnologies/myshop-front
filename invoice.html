@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KVJMRR67');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<title>Invoice - MyShop</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:#f4f6f9;
+padding:30px;
+}
+
+.navbar{
+background:#4f46e5;
+color:white;
+padding:15px 30px;
+border-radius:12px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
+}
+
+.invoice-container{
+max-width:1000px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.1);
+}
+
+.invoice-header{
+display:flex;
+justify-content:space-between;
+margin-bottom:30px;
+border-bottom:2px solid #eee;
+padding-bottom:20px;
+}
+
+.customer-box{
+background:#f8f9ff;
+padding:20px;
+border-radius:10px;
+margin-bottom:20px;
+}
+
+.customer-box h3{
+color:#4f46e5;
+margin-bottom:10px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+th{
+background:#4f46e5;
+color:white;
+padding:12px;
+}
+
+td{
+padding:12px;
+border-bottom:1px solid #ddd;
+text-align:center;
+}
+
+.summary{
+margin-top:25px;
+text-align:right;
+}
+
+.summary p{
+font-size:18px;
+margin:8px 0;
+}
+
+.summary h2{
+color:#28a745;
+margin-top:10px;
+}
+
+.pay-btn{
+margin-top:25px;
+padding:15px 30px;
+background:#28a745;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+float:right;
+}
+
+.pay-btn:hover{
+background:#218838;
+}
+
+</style>
+</head>
+
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KVJMRR67"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<div class="navbar">
+<div class="logo">🛒 MyShop</div>
+<div>Invoice</div>
+</div>
+
+<div class="invoice-container">
+
+<div class="invoice-header">
+
+<div>
+<h1>Invoice</h1>
+<p id="invoiceNo"></p>
+<p id="invoiceDate"></p>
+</div>
+
+<div>
+<h2>MyShop</h2>
+<p>Online Shopping Store</p>
+</div>
+
+</div>
+
+<div class="customer-box">
+
+<h3>Customer Details</h3>
+
+<p>
+<b>Name:</b>
+<span id="customerName"></span>
+</p>
+
+<p>
+<b>Order Status:</b>
+Pending Payment
+</p>
+
+</div>
+
+<table>
+
+<thead>
+<tr>
+<th>Product</th>
+<th>Quantity</th>
+<th>Price</th>
+<th>Amount</th>
+</tr>
+</thead>
+
+<tbody id="billBody">
+</tbody>
+
+</table>
+
+<div class="summary">
+
+<p>
+Subtotal:
+₹<span id="subtotal">0</span>
+</p>
+
+<p>
+GST (18%):
+₹<span id="gst">0</span>
+</p>
+
+<h2>
+Grand Total:
+₹<span id="grandTotal">0</span>
+</h2>
+
+</div>
+
+<button
+class="pay-btn"
+onclick="goToPayment()">
+
+Proceed To Payment →
+
+</button>
+
+</div>
+
+<script>
+
+document.getElementById("invoiceNo")
+.innerText =
+"Invoice No: INV" + Date.now();
+
+document.getElementById("invoiceDate")
+.innerText =
+"Date: " +
+new Date().toLocaleDateString();
+
+document.getElementById("customerName")
+.innerText =
+localStorage.getItem("username")
+|| "Customer";
+
+let cart =
+JSON.parse(localStorage.getItem("cart"))
+|| [];
+
+let html = "";
+
+let subtotal = 0;
+
+cart.forEach(item=>{
+
+let amount =
+item.price * item.quantity;
+
+subtotal += amount;
+
+html += `
+<tr>
+
+<td>${item.name}</td>
+
+<td>${item.quantity}</td>
+
+<td>₹${item.price}</td>
+
+<td>₹${amount}</td>
+
+</tr>
+`;
+
+});
+
+document.getElementById("billBody")
+.innerHTML = html;
+
+let gst =
+Math.round(subtotal * 0.18);
+
+let grandTotal =
+subtotal + gst;
+
+document.getElementById("subtotal")
+.innerText = subtotal;
+
+document.getElementById("gst")
+.innerText = gst;
+
+document.getElementById("grandTotal")
+.innerText = grandTotal;
+
+localStorage.setItem(
+"grandTotal",
+grandTotal
+);
+
+function goToPayment(){
+
+window.location.href =
+"payment.html";
+
+}
+
+</script>
+
+</body>
+</html>

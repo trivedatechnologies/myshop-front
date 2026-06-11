@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KVJMRR67');</script>
+<!-- End Google Tag Manager -->
+<title>Register</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#6a11cb,#2575fc);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    background:white;
+    width:400px;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+
+h2{
+    text-align:center;
+    color:#2575fc;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    background:#2575fc;
+    color:white;
+    font-size:16px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#1b5edb;
+}
+
+a{
+    text-decoration:none;
+    color:#2575fc;
+}
+</style>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KVJMRR67"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<div class="container">
+    <h2>Create Account</h2>
+   
+    <div class="input-group">
+    <input type="text"
+           id="username"
+           placeholder="Username"
+           onkeyup="validateUsername()">
+
+    <small id="usernameError"></small>
+</div>
+    
+    <div class="input-group">
+    <input type="email"
+           id="email"
+           placeholder="Email"
+           onkeyup="validateEmail()">
+
+    <small id="emailError"></small>
+</div>
+    
+    <div class="input-group">
+    <input type="password"
+           id="password"
+           placeholder="Password"
+           onkeyup="validatePassword()">
+
+    <small id="passwordError"></small>
+</div>
+
+    <button onclick="registerUser()">Register</button>
+    <p align="center">
+        Already have an account?
+        <a href="login.html">Login</a>
+    </p>
+</div>
+<script>
+async function registerUser() {
+
+    const username =
+        document.getElementById("username").value.trim();
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const password =
+        document.getElementById("password").value.trim();
+
+    if (!username || !email || !password) {
+        alert("All fields are required");
+        return;
+    }
+
+    try {
+
+        const res = await fetch(
+            "/api/auth/register",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type":
+                    "application/json"
+                },
+                body: JSON.stringify({
+                    username,
+                    email,
+                    password
+                })
+            }
+        );
+
+        const data = await res.json();
+
+        alert(data.message);
+
+        if (res.ok) {
+               dataLayer.push({
+               event: "register",
+               username: username
+           });
+            window.location.href =
+                "login.html";
+        }
+
+    } catch (err) {
+        alert(
+            "Unable to connect to server"
+        );
+        console.error(err);
+    }
+}
+</script>
+<script>
+
+function validateUsername(){
+
+    const username =
+    document.getElementById("username").value;
+
+    const error =
+    document.getElementById("usernameError");
+
+    const regex =
+    /^[a-zA-Z0-9]+$/;
+
+    if(username === ""){
+        error.innerHTML =
+        "Username is required";
+        error.style.color = "red";
+    }
+    else if(!regex.test(username)){
+        error.innerHTML =
+        "Username must be alphanumeric only";
+        error.style.color = "red";
+    }
+    else{
+        error.innerHTML =
+        "✓ Valid Username";
+        error.style.color = "green";
+    }
+}
+
+function validateEmail(){
+
+    const email =
+    document.getElementById("email").value;
+
+    const error =
+    document.getElementById("emailError");
+
+    const regex =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if(email === ""){
+        error.innerHTML =
+        "Email is required";
+        error.style.color = "red";
+    }
+    else if(!regex.test(email)){
+        error.innerHTML =
+        "Invalid email format";
+        error.style.color = "red";
+    }
+    else{
+        error.innerHTML =
+        "✓ Valid Email";
+        error.style.color = "green";
+    }
+}
+
+function validatePassword(){
+
+    const password =
+    document.getElementById("password").value;
+
+    const error =
+    document.getElementById("passwordError");
+
+    const regex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+
+    if(password === ""){
+        error.innerHTML =
+        "Password is required";
+        error.style.color = "red";
+    }
+    else if(!regex.test(password)){
+        error.innerHTML =
+        "8+ chars, uppercase, lowercase, number & symbol";
+        error.style.color = "red";
+    }
+    else{
+        error.innerHTML =
+        "✓ Strong Password";
+        error.style.color = "green";
+    }
+}
+
+</script>
+
+</body>
+</html>

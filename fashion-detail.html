@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KVJMRR67');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<title>Fashion</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:#f4f6f9;
+}
+
+.navbar{
+background:#4f46e5;
+padding:15px 30px;
+color:white;
+display:flex;
+justify-content:space-between;
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
+}
+
+.products{
+max-width:1200px;
+margin:30px auto;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:25px;
+padding:20px;
+}
+
+.card{
+background:white;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-8px);
+}
+
+.card img{
+width:100%;
+height:250px;
+object-fit:cover;
+}
+
+.card-body{
+padding:20px;
+}
+
+.card-body h3{
+color:#4f46e5;
+margin-bottom:10px;
+}
+
+.price{
+font-size:24px;
+font-weight:bold;
+color:#28a745;
+margin:10px 0;
+}
+
+.btn{
+width:100%;
+padding:12px;
+border:none;
+background:#4f46e5;
+color:white;
+border-radius:8px;
+cursor:pointer;
+margin-top:10px;
+}
+
+.btn:hover{
+background:#3730a3;
+}.nav-link{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+    font-size:16px;
+    font-weight:500;
+}
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    background:#4f46e5;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.details{
+margin-top:10px;
+color:#555;
+line-height:1.6;
+}
+
+</style>
+
+</head>
+
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KVJMRR67"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<div class="navbar">
+<div class="logo">My Shop</div>
+
+<div>
+     <a href="checkout.html" class="nav-link">🛒 Cart(<span id="cartCount">0</span>)</a>
+     <a href="login.html" class="nav-link">🚪 Logout</a>
+ </div>
+</div>
+
+<div class="products" id="products"></div>
+
+<script>
+ 
+const categories = {
+
+1:[
+
+// MEN'S WEAR
+
+{
+id:101,
+name:"Denim Jacket",
+price:1999,
+image:"https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600",
+description:"Premium denim jacket for casual wear.",
+size:"M, L, XL",
+brand:"Levis",
+color:"Blue"
+},
+
+{
+id:102,
+name:"Casual Shirt",
+price:999,
+image:"https://images.unsplash.com/photo-1603252109303-2751441dd157?w=600",
+description:"Cotton casual shirt.",
+size:"M, L, XL",
+brand:"Allen Solly",
+color:"White"
+},
+
+{
+id:103,
+name:"Polo T-Shirt",
+price:799,
+image:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600",
+description:"Comfortable polo t-shirt.",
+size:"M, L, XL",
+brand:"US Polo",
+color:"Black"
+},
+
+{
+id:104,
+name:"Slim Fit Jeans",
+price:1499,
+image:"https://images.unsplash.com/photo-1542272604-787c3835535d?w=600",
+description:"Slim fit denim jeans.",
+size:"30,32,34",
+brand:"Levis",
+color:"Blue"
+},
+
+{
+id:105,
+name:"Hoodie",
+price:1299,
+image:"https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600",
+description:"Winter hoodie with soft fabric.",
+size:"M,L,XL",
+brand:"Nike",
+color:"Grey"
+}
+
+],
+
+2:[
+
+// WOMEN'S WEAR
+
+{
+id:201,
+name:"Party Dress",
+price:2499,
+image:"https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=600",
+description:"Elegant party wear dress.",
+size:"S,M,L",
+brand:"Zara",
+color:"Red"
+},
+
+{
+id:202,
+name:"Kurti",
+price:899,
+image:"https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600",
+description:"Traditional cotton kurti.",
+size:"S,M,L,XL",
+brand:"Biba",
+color:"Pink"
+},
+
+{
+id:203,
+name:"Top",
+price:699,
+image:"https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600",
+description:"Stylish women's top.",
+size:"S,M,L",
+brand:"Only",
+color:"Black"
+},
+
+{
+id:204,
+name:"Saree",
+price:1999,
+image:"https://images.unsplash.com/photo-1583391733981-849840fef4d3?w=600",
+description:"Designer saree.",
+size:"Free Size",
+brand:"Kalanjali",
+color:"Maroon"
+},
+
+{
+id:205,
+name:"Women's Jeans",
+price:1499,
+image:"https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=600",
+description:"Comfort fit jeans.",
+size:"28,30,32",
+brand:"Levis",
+color:"Blue"
+}
+
+],
+
+3:[
+
+// FOOTWEAR
+
+{
+id:301,
+name:"Running Shoes",
+price:2999,
+image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600",
+description:"Lightweight running shoes.",
+size:"7,8,9,10",
+brand:"Nike",
+color:"White"
+},
+
+{
+id:302,
+name:"Sneakers",
+price:2499,
+image:"https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=600",
+description:"Daily wear sneakers.",
+size:"7,8,9,10",
+brand:"Adidas",
+color:"Black"
+},
+
+{
+id:303,
+name:"Formal Shoes",
+price:3499,
+image:"https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=600",
+description:"Premium formal shoes.",
+size:"7,8,9,10",
+brand:"Bata",
+color:"Brown"
+},
+
+{
+id:304,
+name:"Sandals",
+price:999,
+image:"https://images.unsplash.com/photo-1608256246200-53e8b47b2f80?w=600",
+description:"Comfortable sandals.",
+size:"6,7,8,9",
+brand:"Sparx",
+color:"Tan"
+},
+
+{
+id:305,
+name:"Sports Shoes",
+price:3999,
+image:"https://images.unsplash.com/photo-1605348532760-6753d2c43329?w=600",
+description:"Professional sports shoes.",
+size:"7,8,9,10",
+brand:"Puma",
+color:"Blue"
+}
+
+],
+
+4:[
+
+// BAGS
+
+{
+id:401,
+name:"Handbag",
+price:1499,
+image:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600",
+description:"Stylish handbag.",
+size:"Medium",
+brand:"Guess",
+color:"Brown"
+},
+
+{
+id:402,
+name:"Backpack",
+price:1999,
+image:"https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600",
+description:"Travel backpack.",
+size:"30L",
+brand:"Skybags",
+color:"Black"
+},
+
+{
+id:403,
+name:"Travel Bag",
+price:2499,
+image:"https://images.unsplash.com/photo-1542296332-2e4473faf563?w=600",
+description:"Large travel bag.",
+size:"50L",
+brand:"VIP",
+color:"Blue"
+},
+
+{
+id:404,
+name:"Laptop Bag",
+price:1799,
+image:"https://images.unsplash.com/photo-1547949003-9792a18a2601?w=600",
+description:"Waterproof laptop bag.",
+size:"15.6 Inch",
+brand:"American Tourister",
+color:"Grey"
+},
+
+{
+id:405,
+name:"Shoulder Bag",
+price:1299,
+image:"https://images.unsplash.com/photo-1594223274512-ad4803739b7c?w=600",
+description:"Fashion shoulder bag.",
+size:"Medium",
+brand:"Lavie",
+color:"Pink"
+}
+
+],
+
+5:[
+
+// ACCESSORIES
+
+{
+id:501,
+name:"Sunglasses",
+price:999,
+image:"https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600",
+description:"UV protected sunglasses.",
+size:"Free Size",
+brand:"RayBan",
+color:"Black"
+},
+
+{
+id:502,
+name:"Watch",
+price:2999,
+image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600",
+description:"Premium wrist watch.",
+size:"44 mm",
+brand:"Titan",
+color:"Silver"
+},
+
+{
+id:503,
+name:"Leather Belt",
+price:799,
+image:"https://images.unsplash.com/photo-1624222247344-550fb60583dc?w=600",
+description:"Genuine leather belt.",
+size:"32,34,36",
+brand:"Woodland",
+color:"Brown"
+},
+
+{
+id:504,
+name:"Cap",
+price:499,
+image:"https://images.unsplash.com/photo-1521369909029-2afed882baee?w=600",
+description:"Sports cap.",
+size:"Free Size",
+brand:"Nike",
+color:"Black"
+},
+
+{
+id:505,
+name:"Wallet",
+price:899,
+image:"https://images.unsplash.com/photo-1627123424574-724758594e93?w=600",
+description:"Premium leather wallet.",
+size:"Standard",
+brand:"Fossil",
+color:"Brown"
+}
+
+]
+
+};
+
+const categoryId = new URLSearchParams(window.location.search).get("id");
+const products = categories[categoryId];
+
+let html = "";
+
+products.forEach(product => {
+
+html += `
+<div class="card">
+
+<img src="${product.image}">
+
+<div class="card-body">
+
+<h3>${product.name}</h3>
+
+<div class="price">₹${product.price}</div>
+
+<p>${product.description}</p>
+
+<p><b>Brand:</b> ${product.brand}</p>
+<p><b>Size:</b> ${product.size}</p>
+<p><b>Color:</b> ${product.color}</p>
+<p>
+<b>Available Sizes:</b>
+</p>
+
+<select id="size-${product.id}"
+style="
+width:100%;
+padding:10px;
+margin-top:10px;
+border:1px solid #ddd;
+border-radius:8px;
+">
+
+${product.size.split(",").map(size =>
+`<option value="${size.trim()}">
+${size.trim()}
+</option>`
+).join("")}
+
+</select>
+
+<button class="btn"
+onclick='addToCart(${JSON.stringify(product)})'>
+Add To Cart
+</button>
+
+</div>
+
+</div>
+`;
+
+});
+
+document.getElementById("products").innerHTML = html;
+
+function updateCartCount() {
+
+    let cart =
+    JSON.parse(localStorage.getItem("cart"))
+    || [];
+
+    let totalQty = 0;
+
+    cart.forEach(item => {
+        totalQty += item.quantity || 1;
+    });
+
+    const cartCount =
+    document.getElementById("cartCount");
+
+    if(cartCount){
+        cartCount.innerText = totalQty;
+    }
+}
+
+function addToCart(product){
+
+let selectedSize =
+document.getElementById(
+`size-${product.id}`
+).value;
+
+let cart =
+JSON.parse(localStorage.getItem("cart"))
+|| [];
+
+let existing =
+cart.find(item => item.id === product.id);
+
+if(existing){
+
+existing.quantity++;
+
+}else{
+cart.push({
+
+id:product.id,
+image:product.image,
+name:product.name,
+price:product.price,
+size:selectedSize,
+quantity:1
+
+});
+
+}
+
+localStorage.setItem(
+"cart",
+JSON.stringify(cart)
+);
+dataLayer.push({
+    event: "add_to_cart",
+    product_name: product.name,
+    price: product.price
+});
+
+ updateCartCount();
+
+function logout(){
+
+    localStorage.removeItem("token");
+
+    alert("Logged Out Successfully");
+    dataLayer.push({
+    event: "logout"
+});
+    window.location.href =
+    "login.html";
+}
+
+
+alert(
+product.name +
+" (" + selectedSize + ") Added To Cart"
+);
+
+}
+function goBack(){
+    window.history.back();
+}
+window.addEventListener("pageshow", function () {
+    updateCartCount();
+   
+});
+</script>
+<button class="back-btn" onclick="goBack()">
+    ← Back
+</button>
+
+</body>
+</html> 

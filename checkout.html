@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KVJMRR67');</script>
+<!-- End Google Tag Manager -->
+<title>Checkout</title>
+
+<style>
+
+body{
+font-family:'Segoe UI';
+background:#f4f6f9;
+}
+
+.container{
+max-width:1000px;
+margin:auto;
+padding:20px;
+}
+
+.cart-item{
+background:white;
+display:flex;
+gap:20px;
+padding:20px;
+margin-bottom:20px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+.cart-item img{
+width:140px;
+height:140px;
+object-fit:cover;
+border-radius:10px;
+}
+
+.details{
+flex:1;
+}
+
+.price{
+color:green;
+font-size:20px;
+font-weight:bold;
+}
+
+.remove-btn{
+background:red;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:8px;
+cursor:pointer;
+}
+
+.total{
+text-align:right;
+font-size:30px;
+font-weight:bold;
+margin-top:20px;
+}
+.payment-section{
+background:white;
+padding:25px;
+margin-top:30px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+.payment-section h2{
+margin-bottom:20px;
+color:#4f46e5;
+}
+
+.pay-btn{
+width:100%;
+padding:15px;
+background:#28a745;
+color:white;
+border:none;
+border-radius:8px;
+font-size:18px;
+cursor:pointer;
+}
+.navbar{
+background:#4f46e5;
+padding:15px 30px;
+color:white;
+display:flex;
+justify-content:space-between;
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
+}
+
+.pay-btn:hover{
+background:#218838;
+}
+.qty-btn{
+padding:6px 12px;
+border:none;
+background:#4f46e5;
+color:white;
+border-radius:5px;
+cursor:pointer;
+font-size:16px;
+margin:0 5px;
+}
+
+.qty-btn:hover{
+background:#3730a3;
+}
+
+</style>
+
+</head>
+
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KVJMRR67"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<div class="navbar">
+<div class="logo">MyShop</div>
+</div>
+<div class="container">
+
+<h1>🛒 Checkout</h1>
+<div id="emptyCartMessage"
+style="
+display:none;
+text-align:center;
+font-size:28px;
+font-weight:bold;
+color:red;
+margin:40px 0;
+">
+🛒 Cart is Empty
+</div>
+
+<div id="cartItems">
+</div>
+
+<div class="total">
+
+<button id="generateBillBtn"
+onclick="generateBill()"
+style="
+padding:15px 25px;
+font-size:22px;
+background:#4f46e5;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+">
+
+Generate Bill
+₹<span id="total">0</span>
+
+</button>
+<button
+id="clearCartBtn"
+onclick="clearCart()"
+style="
+padding:15px 25px;
+font-size:20px;
+background:red;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+margin-left:10px;
+">
+
+🗑 Clear Cart
+
+</button>
+
+</div>
+
+
+
+
+<script>
+
+let cart =
+JSON.parse(localStorage.getItem("cart"))
+|| [];
+
+let html = "";
+let total = 0;
+
+cart.forEach((item,index)=>{
+
+total += item.price * item.quantity;
+
+html += `
+
+<div class="cart-item">
+
+<img src="${item.image}">
+
+<div class="details">
+
+<h2>${item.name}</h2>
+
+${item.author ? `
+<p><b>Author:</b> ${item.author}</p>
+` : ""}
+
+${item.publisher ? `
+<p><b>Publisher:</b> ${item.publisher}</p>
+` : ""}
+
+${item.size ? `
+<p>
+<b>Size:</b> ${item.size}
+</p>
+` : ""}
+
+${item.model ? `
+<p><b>Model:</b> ${item.model}</p>
+` : ""}
+
+${item.capacity ? `
+<p><b>Capacity:</b> ${item.capacity}</p>
+` : ""}
+
+${item.warranty ? `
+<p>
+<b>Warranty:</b> ${item.warranty}
+</p>
+` : ""}
+<p class="price">
+₹${item.price}
+</p>
+
+<p>
+<b>Quantity:</b>
+
+<button class="qty-btn"
+onclick="decreaseQty(${index})">
+-
+</button>
+
+${item.quantity}
+
+<button class="qty-btn"
+onclick="increaseQty(${index})">
++
+</button>
+
+</p>
+
+<button
+class="remove-btn"
+onclick="removeItem(${index})">
+
+Remove
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("cartItems")
+.innerHTML = html;
+
+document.getElementById("total")
+.innerText = total;
+if(cart.length === 0){
+
+    document.getElementById(
+    "emptyCartMessage"
+    ).style.display = "block";
+
+    document.getElementById(
+    "generateBillBtn"
+    ).style.display = "none";
+    document.getElementById(
+    "clearCartBtn"
+    ).style.display = "none";
+
+}else{
+
+   document.getElementById(
+    "emptyCartMessage"
+    ).style.display = "none";
+
+    document.getElementById(
+    "generateBillBtn"
+    ).style.display = "inline-block";
+
+    document.getElementById(
+    "clearCartBtn"
+    ).style.display = "inline-block";
+
+}
+
+function removeItem(index){
+
+cart.splice(index,1);
+
+
+localStorage.setItem(
+"cart",
+JSON.stringify(cart)
+);
+
+location.reload();
+
+}
+function increaseQty(index){
+
+    cart[index].quantity =
+    (cart[index].quantity || 1) + 1;
+
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
+    
+    location.reload();
+}
+
+function decreaseQty(index){
+
+    if(cart[index].quantity > 1){
+
+        cart[index].quantity--;
+
+    }else{
+
+        cart.splice(index,1);
+    }
+
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
+
+    location.reload();
+}
+function generateBill(){
+   
+    dataLayer.push({
+    event: "begin_checkout",
+    total_amount: total
+    });
+    
+    window.location.href =
+    "invoice.html";
+
+}
+function placeOrder(){
+
+const paymentMethod =
+document.querySelector(
+'input[name="payment"]:checked'
+).value;
+
+function increaseQty(index){
+
+cart[index].quantity++;
+
+localStorage.setItem(
+"cart",
+JSON.stringify(cart)
+);
+
+location.reload();
+
+}
+function decreaseQty(index){
+
+if(cart[index].quantity > 1){
+
+cart[index].quantity--;
+
+}else{
+
+cart.splice(index,1);
+
+}
+
+
+
+location.reload();
+
+}
+
+function updateCartCount(){
+
+    let cart =
+    JSON.parse(localStorage.getItem("cart"))
+    || [];
+
+    let totalQty = 0;
+
+    cart.forEach(item=>{
+        totalQty += item.quantity || 1;
+    });
+
+    localStorage.setItem(
+        "cartCount",
+        totalQty
+    );
+}
+
+
+
+if(cart.length === 0){
+
+alert("Your cart is empty");
+
+return;
+
+}
+
+
+localStorage.removeItem("cart");
+
+window.location.href =
+"categories.html";
+
+}
+function clearCart(){
+
+    let confirmDelete =
+    confirm(
+    "Are you sure you want to remove all items from the cart?"
+    );
+
+    if(confirmDelete){
+
+        localStorage.removeItem("cart");
+
+        localStorage.removeItem("grandTotal");
+
+        alert("Cart cleared successfully");
+
+        window.location.href =
+        "categories.html";
+    }
+
+}
+function goBack(){
+    window.location.href =
+        "categories.html";
+}
+
+</script>
+<button class="back-btn"  onclick="goBack()" style="
+padding:15px 25px;
+font-size:22px;
+background:#4f46e5;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+">
+    ← Back to Home Page
+</button>
+</body>
+</html>

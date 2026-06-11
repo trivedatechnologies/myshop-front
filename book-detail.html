@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KVJMRR67');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<title>Books</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:#f4f6f9;
+}
+
+.navbar{
+background:#4f46e5;
+padding:15px 30px;
+color:white;
+display:flex;
+justify-content:space-between;
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
+}
+
+.products{
+max-width:1200px;
+margin:30px auto;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:25px;
+padding:20px;
+}
+
+.card{
+background:white;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-8px);
+}
+
+.card img{
+width:100%;
+height:250px;
+object-fit:cover;
+}
+
+.card-body{
+padding:20px;
+}
+
+.card-body h3{
+color:#4f46e5;
+margin-bottom:10px;
+}
+
+.price{
+font-size:24px;
+font-weight:bold;
+color:#28a745;
+margin:10px 0;
+}
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    background:#4f46e5;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.btn{
+width:100%;
+padding:12px;
+border:none;
+background:#4f46e5;
+color:white;
+border-radius:8px;
+cursor:pointer;
+margin-top:10px;
+}
+
+.btn:hover{
+background:#3730a3;
+}
+.nav-link{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+    font-size:16px;
+    font-weight:500;
+}
+.details{
+margin-top:10px;
+color:#555;
+line-height:1.6;
+}
+
+</style>
+
+</head>
+
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KVJMRR67"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<div class="navbar">
+<div class="logo">My Shop</div>
+
+<div>
+     <a href="checkout.html" class="nav-link">🛒 Cart(<span id="cartCount">0</span>)</a>
+     <a href="login.html" class="nav-link">🚪 Logout</a>
+ </div>
+</div>
+
+<div class="products" id="products"></div>
+
+<script>
+ 
+const categories = {
+
+1:[
+
+{
+id:101,
+name:"Java Programming Mastery",
+price:799,
+image:"https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800",
+description:"Complete Java Programming from Beginner to Advanced.",
+author:"Herbert Schildt",
+pages:"850",
+publisher:"McGraw Hill",
+language:"English"
+},
+
+{
+id:102,
+name:"Python Crash Course",
+price:699,
+image:"https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=800",
+description:"Learn Python with practical projects.",
+author:"Eric Matthes",
+pages:"550",
+publisher:"No Starch Press",
+language:"English"
+},
+
+{
+id:103,
+name:"C Programming",
+price:599,
+image:"https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800",
+description:"Fundamentals of C Programming.",
+author:"Dennis Ritchie",
+pages:"450",
+publisher:"Pearson",
+language:"English"
+},
+
+{
+id:104,
+name:"C++ Complete Guide",
+price:749,
+image:"https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=800",
+description:"Object Oriented Programming with C++.",
+author:"Bjarne Stroustrup",
+pages:"700",
+publisher:"Addison Wesley",
+language:"English"
+},
+
+{
+id:105,
+name:"Software Engineering",
+price:899,
+image:"https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800",
+description:"Software Development Life Cycle and Design.",
+author:"Ian Sommerville",
+pages:"950",
+publisher:"Pearson",
+language:"English"
+}
+
+],
+2:[
+
+{
+id:201,
+name:"HTML & CSS Design",
+price:699,
+image:"https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800",
+description:"Learn HTML5 and CSS3.",
+author:"Jon Duckett",
+pages:"490",
+publisher:"Wiley",
+language:"English"
+},
+
+{
+id:202,
+name:"JavaScript Guide",
+price:799,
+image:"https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800",
+description:"Modern JavaScript Programming.",
+author:"David Flanagan",
+pages:"750",
+publisher:"O'Reilly",
+language:"English"
+},
+
+{
+id:203,
+name:"React Development",
+price:899,
+image:"https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800",
+description:"Building Modern React Applications.",
+author:"Alex Banks",
+pages:"600",
+publisher:"O'Reilly",
+language:"English"
+},
+
+{
+id:204,
+name:"Node.js Complete Guide",
+price:849,
+image:"https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800",
+description:"Backend Development with Node.js.",
+author:"Maximilian",
+pages:"700",
+publisher:"Packt",
+language:"English"
+},
+
+{
+id:205,
+name:"Full Stack Development",
+price:999,
+image:"https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=800",
+description:"Frontend and Backend Development.",
+author:"Mern Academy",
+pages:"850",
+publisher:"Packt",
+language:"English"
+}
+
+],
+3:[
+
+{
+id:301,
+name:"Database System Concepts",
+price:899,
+image:"https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=800",
+description:"Comprehensive DBMS concepts.",
+author:"Silberschatz",
+pages:"1200",
+publisher:"McGraw Hill",
+language:"English"
+},
+
+{
+id:302,
+name:"SQL Fundamentals",
+price:599,
+image:"https://images.unsplash.com/photo-1516321310764-8d8c7b8f74e2?w=800",
+description:"Master SQL Queries.",
+author:"John Patrick",
+pages:"450",
+publisher:"Pearson",
+language:"English"
+},
+
+{
+id:303,
+name:"MySQL Bible",
+price:749,
+image:"https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800",
+description:"Learn MySQL Administration.",
+author:"Steve Suehring",
+pages:"650",
+publisher:"Wiley",
+language:"English"
+},
+
+{
+id:304,
+name:"Oracle Database Guide",
+price:999,
+image:"https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=800",
+description:"Oracle Database Administration.",
+author:"Oracle Press",
+pages:"900",
+publisher:"Oracle",
+language:"English"
+},
+
+{
+id:305,
+name:"Advanced SQL",
+price:799,
+image:"https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800",
+description:"Advanced Query Optimization.",
+author:"Joe Celko",
+pages:"550",
+publisher:"Morgan Kaufmann",
+language:"English"
+}
+
+],
+4:[
+
+{
+id:401,
+name:"Data Science Handbook",
+price:999,
+image:"https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800",
+description:"Complete Data Science Guide.",
+author:"Jake VanderPlas",
+pages:"800",
+publisher:"O'Reilly",
+language:"English"
+},
+
+{
+id:402,
+name:"Statistics for Data Science",
+price:799,
+image:"https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800",
+description:"Statistical Methods.",
+author:"James Miller",
+pages:"650",
+publisher:"Pearson",
+language:"English"
+},
+
+{
+id:403,
+name:"Machine Learning Basics",
+price:899,
+image:"https://images.unsplash.com/photo-1527474305487-b87b222841cc?w=800",
+description:"Introduction to Machine Learning.",
+author:"Andrew Ng",
+pages:"700",
+publisher:"Coursera Press",
+language:"English"
+},
+
+{
+id:404,
+name:"Python for Data Analysis",
+price:849,
+image:"https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=800",
+description:"Data Analysis using Python.",
+author:"Wes McKinney",
+pages:"600",
+publisher:"O'Reilly",
+language:"English"
+},
+
+{
+id:405,
+name:"Big Data Analytics",
+price:1099,
+image:"https://images.unsplash.com/photo-1518186233392-c232efbf2373?w=800",
+description:"Big Data Technologies.",
+author:"Tom White",
+pages:"900",
+publisher:"Packt",
+language:"English"
+}
+
+],
+5:[
+
+{
+id:501,
+name:"Artificial Intelligence Modern Approach",
+price:1299,
+image:"https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800",
+description:"Most popular AI textbook.",
+author:"Russell & Norvig",
+pages:"1150",
+publisher:"Pearson",
+language:"English"
+},
+
+{
+id:502,
+name:"Deep Learning",
+price:1199,
+image:"https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800",
+description:"Deep Learning fundamentals.",
+author:"Ian Goodfellow",
+pages:"900",
+publisher:"MIT Press",
+language:"English"
+},
+
+{
+id:503,
+name:"Generative AI Guide",
+price:999,
+image:"https://images.unsplash.com/photo-1676277791608-ac54525bfe1b?w=800",
+description:"ChatGPT and Generative AI.",
+author:"Mark Ryan",
+pages:"550",
+publisher:"Packt",
+language:"English"
+},
+
+{
+id:504,
+name:"Neural Networks",
+price:899,
+image:"https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1?w=800",
+description:"Neural Network Architectures.",
+author:"Simon Haykin",
+pages:"800",
+publisher:"Pearson",
+language:"English"
+},
+
+{
+id:505,
+name:"Machine Learning Engineering",
+price:1099,
+image:"https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=800",
+description:"Production ML Systems.",
+author:"Andriy Burkov",
+pages:"650",
+publisher:"O'Reilly",
+language:"English"
+}
+
+]};
+const categoryId =
+new URLSearchParams(window.location.search)
+.get("id");
+
+const products =
+categories[categoryId];
+
+let html = "";
+
+products.forEach(product=>{
+
+html += `
+
+<div class="card">
+
+<img src="${product.image}">
+
+<div class="card-body">
+
+<h3>${product.name}</h3>
+
+<div class="price">
+₹${product.price}
+</div>
+
+<div class="details">
+
+<p>
+<b>Description:</b><br>
+${product.description}
+</p>
+
+<p>
+<b>Author:</b>
+${product.author}
+</p>
+
+<p>
+<b>Pages:</b>
+${product.pages}
+</p>
+
+<p>
+<b>Publisher:</b>
+${product.publisher}
+</p>
+
+<p>
+<b>Language:</b>
+${product.language}
+</p>
+
+</div>
+
+<button class="btn"
+onclick='addToCart(${JSON.stringify(product)})'>
+Add To Cart
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("products").innerHTML = html;
+
+function updateCartCount() {
+
+    let cart =
+    JSON.parse(localStorage.getItem("cart"))
+    || [];
+
+    let totalQty = 0;
+
+    cart.forEach(item => {
+        totalQty += item.quantity || 1;
+    });
+
+    const cartCount =
+    document.getElementById("cartCount");
+
+    if(cartCount){
+        cartCount.innerText = totalQty;
+    }
+}
+
+function addToCart(product){
+
+let cart =
+JSON.parse(localStorage.getItem("cart"))
+|| [];
+
+let existing =
+cart.find(item => item.id === product.id);
+
+if(existing){
+
+existing.quantity++;
+
+}else{
+
+cart.push({
+
+id:product.id,
+image:product.image,
+name:product.name,
+price:product.price,
+author:product.author,
+publisher:product.publisher,
+pages:product.pages,
+language:product.language,
+quantity:1
+
+});
+
+}
+
+
+
+localStorage.setItem(
+"cart",
+JSON.stringify(cart)
+);
+dataLayer.push({
+    event: "add_to_cart",
+    product_name: product.name,
+    price: product.price
+});
+
+updateCartCount();
+function logout(){
+
+    localStorage.removeItem("token");
+
+    alert("Logged Out Successfully");
+    dataLayer.push({
+    event: "logout"
+});
+    window.location.href =
+    "login.html";
+}
+
+
+
+
+alert(product.name + " Added To Cart");
+
+}
+
+function goBack(){
+    window.history.back();
+}
+window.addEventListener("pageshow", function () {
+    updateCartCount();
+});
+
+</script>
+<button class="back-btn" onclick="goBack()">
+    ← Back
+</button>
+
+</body>
+</html>

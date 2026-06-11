@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KVJMRR67');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Appliance</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+}
+
+.navbar{
+    background:#4f46e5;
+    color:white;
+    padding:15px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:bold;
+}
+
+.cart-btn{
+    background:white;
+    color:#4f46e5;
+    padding:10px 15px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+h1{
+    text-align:center;
+    margin:30px 0;
+    color:#333;
+}
+
+.products{
+    max-width:1200px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+}
+
+.card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+.card-body{
+    padding:15px;
+}
+
+.card-body h3{
+    margin-bottom:10px;
+}
+
+.price{
+    color:#28a745;
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    background:#4f46e5;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    background:#3730a3;
+}
+.nav-link{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+    font-size:16px;
+    font-weight:500;
+}
+</style>
+</head>
+
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KVJMRR67"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<div class="navbar">
+    <div class="logo">My Shop</div>
+     <div>
+     <a href="checkout.html" class="nav-link">🛒 Cart(<span id="cartCount">0</span>)</a>
+     <a href="login.html" class="nav-link">🚪 Logout</a>
+ </div>
+</div>
+<div class="products" id="products"></div>
+
+<script>
+
+const applianceCategories = [
+
+{
+id:1,
+name:"Refrigerators",
+image:"https://images.unsplash.com/photo-1584568694244-14fbdf83bd30?w=600",
+description:"Single Door, Double Door and Smart Refrigerators"
+},
+
+{
+id:2,
+name:"Washing Machines",
+image:"https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=600",
+description:"Top Load, Front Load and Automatic Machines"
+},
+
+{
+id:3,
+name:"Air Conditioners",
+image:"https://plus.unsplash.com/premium_photo-1679943423706-570c6462f9a4?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YWlyJTIwY29uZGl0aW9uZXJ8ZW58MHx8MHx8fDA%3D",
+description:"Split AC, Window AC and Inverter AC"
+},
+
+{
+id:4,
+name:"Kitchen Appliances",
+image:"https://images.unsplash.com/photo-1574269909862-7e1d70bb8078?w=600",
+description:"Microwave, Mixer, Induction and Oven"
+},
+
+{
+id:5,
+name:"Cleaning Appliances",
+image:"https://images.unsplash.com/photo-1558317374-067fb5f30001?w=600",
+description:"Vacuum Cleaners and Steam Cleaners"
+}
+
+];
+
+const productDiv =
+document.getElementById("products");
+
+applianceCategories.forEach(category=>{
+productDiv.innerHTML += `
+
+<div class="card">
+
+<img src="${category.image}">
+
+<div class="card-body">
+
+<h3>${category.name}</h3>
+
+<p>
+${category.description}
+</p>
+
+<a href="home-appliance-detail.html?id=${category.id}">
+<button>
+View Products
+</button>
+</a>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+function logout(){
+
+    localStorage.removeItem("token");
+
+    alert("Logged Out Successfully");
+    dataLayer.push({
+    event: "logout"
+});
+    window.location.href =
+    "login.html";
+}
+function goBack(){
+    window.history.back();
+}
+function updateCartCount() {
+
+    let cart =
+    JSON.parse(localStorage.getItem("cart"))
+    || [];
+
+    let totalQty = 0;
+
+    cart.forEach(item => {
+        totalQty += item.quantity || 1;
+    });
+
+    const cartCount =
+    document.getElementById("cartCount");
+
+    if(cartCount){
+        cartCount.innerText = totalQty;
+    }
+}
+
+updateCartCount();
+window.addEventListener("pageshow", function () {
+    updateCartCount();
+});
+
+</script>
+<button class="back-btn" onclick="goBack()">
+    ← Back
+</button>
+</body>
+</html>

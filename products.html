@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KVJMRR67');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electronics</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+}
+.nav-link{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+    font-size:16px;
+    font-weight:500;
+}
+.navbar{
+    background:#4f46e5;
+    color:white;
+    padding:15px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:bold;
+}
+
+.cart-btn{
+    background:white;
+    color:#4f46e5;
+    padding:10px 15px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:bold;
+}
+.nav-link{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+    font-size:16px;
+    font-weight:500;
+}
+h1{
+    text-align:center;
+    margin:30px 0;
+    color:#333;
+}
+
+.products{
+    max-width:1200px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+}
+
+.card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+.card-body{
+    padding:15px;
+}
+
+.card-body h3{
+    margin-bottom:10px;
+}
+
+.price{
+    color:#28a745;
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    background:#4f46e5;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    background:#3730a3;
+}
+</style>
+</head>
+
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KVJMRR67"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<div class="navbar">
+    <div class="logo">MyShop</div>
+
+      <div>
+     <a href="checkout.html" class="nav-link">🛒 Cart(<span id="cartCount">0</span>)</a>
+     <a href="login.html" class="nav-link">🚪 Logout</a>
+ </div>
+</div>
+
+<h1>Electronic Devices</h1>
+
+<div class="products" id="products"></div>
+
+
+<script>
+
+const products = [
+
+{   id:1,
+    name:"Laptop",   
+    image:"https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600"
+},
+
+{
+    id:2,       
+    name:"Smart Phone",
+    image:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600"
+},
+
+{
+    id:3,
+    name:"Headphones",
+    image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600"
+},
+
+{
+    id:4,
+    name:"Smart Watch",
+    image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600"
+}
+
+];
+
+const productDiv =
+document.getElementById("products");
+
+products.forEach(product=>{
+
+    productDiv.innerHTML += `
+
+    <div class="card">
+
+        <img src="${product.image}">
+
+        <div class="card-body">
+
+            <h3>${product.name}</h3>
+
+            <a href="product-detail.html?id=${product.id}">
+            <button>View Details</button></a>
+
+        </div>
+
+    </div>
+    `;
+});
+
+
+function updateCartCount() {
+
+    let cart =
+    JSON.parse(localStorage.getItem("cart"))
+    || [];
+
+    let totalQty = 0;
+
+    cart.forEach(item => {
+        totalQty += item.quantity || 1;
+    });
+
+    const cartCount =
+    document.getElementById("cartCount");
+
+    if(cartCount){
+        cartCount.innerText = totalQty;
+    }
+}
+
+updateCartCount();
+
+function goBack(){
+    window.history.back();
+}
+
+function logout(){
+
+    localStorage.removeItem("token");
+
+    alert("Logged Out Successfully");
+   dataLayer.push({
+    event: "logout"
+});
+    window.location.href =
+    "login.html";
+}
+
+window.addEventListener("pageshow", function () {
+    updateCartCount();
+});
+</script>
+<button class="back-btn" onclick="goBack()">
+    ← Back
+</button>
+
+
+</body>
+</html>

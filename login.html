@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KVJMRR67');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyShop Login</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+}
+
+.container{
+    width:900px;
+    max-width:95%;
+    display:flex;
+    background:#fff;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 15px 35px rgba(0,0,0,0.2);
+}
+
+.left{
+    flex:1;
+    background:linear-gradient(135deg,#4facfe,#00f2fe);
+    color:white;
+    padding:60px 40px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.left h1{
+    font-size:40px;
+    margin-bottom:20px;
+}
+
+.left p{
+    font-size:18px;
+    line-height:1.6;
+}
+
+.right{
+    flex:1;
+    padding:50px;
+}
+
+.right h2{
+    text-align:center;
+    margin-bottom:30px;
+    color:#333;
+}
+
+.input-group{
+    margin-bottom:20px;
+}
+
+.input-group input{
+    width:100%;
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    outline:none;
+    font-size:16px;
+}
+
+.input-group input:focus{
+    border-color:#667eea;
+}
+
+.login-btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    background:#667eea;
+    color:white;
+    font-size:18px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.login-btn:hover{
+    background:#5563d6;
+}
+
+.register{
+    text-align:center;
+    margin-top:20px;
+}
+
+.register a{
+    color:#667eea;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.error{
+    color:red;
+    margin-bottom:15px;
+    text-align:center;
+}
+</style>
+</head>
+
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KVJMRR67"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<div class="container">
+
+    <div class="left">
+        <h1>MyShop</h1>
+        <p>
+            Welcome! Login to explore the latest products,
+            manage your cart and enjoy a seamless shopping experience.
+        </p>
+    </div>
+
+    <div class="right">
+
+        <h2>Login Account</h2>
+
+        <div id="error" class="error"></div>
+
+        <div class="input-group">
+            <input type="text" id="username" placeholder="Enter Username">
+        </div>
+
+        <div class="input-group">
+            <input type="password" id="password" placeholder="Enter Password">
+        </div>
+
+        <button class="login-btn" onclick="login()">
+            Login
+        </button>
+
+        <div class="register">
+            New User?
+            <a href="register.html">Create Account</a>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+async function login(){
+
+    const username =
+        document.getElementById("username").value.trim();
+
+    const password =
+        document.getElementById("password").value.trim();
+
+    const error =
+        document.getElementById("error");
+
+    error.innerHTML = "";
+
+    if(!username || !password){
+        error.innerHTML = "Please fill all fields";
+        return;
+    }
+
+    try{
+        const API_URL="https://myshop-back.onrender.com"
+        const res = await fetch(`${API_URL}/api/auth/login`,{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                username,
+                password
+            })
+        });
+
+        const data = await res.json();
+
+        if(res.ok){
+             localStorage.setItem("userId", data.user.id);
+             localStorage.setItem("username", data.user.username);
+             dataLayer.push({
+              event: "login",
+              username: username
+            });
+            localStorage.removeItem("cart");
+            alert("Login Successful");
+           
+            localStorage.setItem(
+                "token",
+                data.token
+            );
+
+            window.location.href =
+                "categories.html";
+        }
+        else{
+            error.innerHTML =
+                data.message;
+        }
+
+    }catch(err){
+        error.innerHTML =
+            "Server Error";
+    }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KVJMRR67');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<title>Payment - MyShop</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:#f4f6f9;
+padding:30px;
+}
+
+.container{
+max-width:700px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#4f46e5;
+margin-bottom:20px;
+}
+
+.total-box{
+background:#f0fff4;
+padding:15px;
+border-radius:10px;
+margin-bottom:20px;
+font-size:22px;
+font-weight:bold;
+text-align:center;
+color:#28a745;
+}
+
+input[type=text]{
+width:100%;
+padding:12px;
+margin-top:10px;
+margin-bottom:15px;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+.payment-card{
+display:block;
+padding:15px;
+border:1px solid #ddd;
+border-radius:10px;
+margin-bottom:10px;
+cursor:pointer;
+}
+
+.payment-card:hover{
+background:#f8f9ff;
+}
+
+.pay-btn{
+width:100%;
+padding:15px;
+background:#28a745;
+color:white;
+border:none;
+border-radius:8px;
+font-size:18px;
+cursor:pointer;
+margin-top:15px;
+}
+
+.pay-btn:hover{
+background:#218838;
+}
+
+</style>
+</head>
+
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KVJMRR67"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<div class="container">
+
+<h1>💳 Payment Details</h1>
+
+<div class="total-box">
+
+Total Payable:
+₹<span id="amount"></span>
+
+</div>
+
+<input
+type="text"
+id="customerName"
+placeholder="Full Name">
+
+<input
+type="text"
+id="address"
+placeholder="Delivery Address">
+
+<input
+type="text"
+id="mobile"
+placeholder="Mobile Number">
+
+<h3>Select Payment Method</h3>
+
+<br>
+
+<label class="payment-card">
+
+<input
+type="radio"
+name="payment"
+value="Cash On Delivery"
+checked>
+
+🚚 Cash On Delivery
+
+</label>
+
+<label class="payment-card">
+
+<input
+type="radio"
+name="payment"
+value="UPI">
+
+📱 UPI Payment
+
+</label>
+
+<label class="payment-card">
+
+<input
+type="radio"
+name="payment"
+value="Credit Card">
+
+💳 Credit / Debit Card
+
+</label>
+
+<button
+class="pay-btn"
+onclick="payNow()">
+
+Pay Now
+
+</button>
+
+</div>
+
+<script>
+
+document.getElementById("amount")
+.innerText =
+localStorage.getItem("grandTotal")
+|| 0;
+
+function payNow(){
+
+let name =
+document.getElementById("customerName").value;
+
+let address =
+document.getElementById("address").value;
+
+let mobile =
+document.getElementById("mobile").value;
+
+if(
+name === "" ||
+address === "" ||
+mobile === ""
+){
+
+alert(
+"Please fill all details"
+);
+
+return;
+
+}
+
+let paymentMethod =
+document.querySelector(
+'input[name="payment"]:checked'
+).value;
+
+dataLayer.push({
+    event: "purchase",
+    amount: localStorage.getItem("grandTotal"),
+    payment_method: paymentMethod
+});
+
+alert(
+"✅ Order Placed Successfully!\n\n" +
+"Payment Method: " +
+paymentMethod
+);
+
+localStorage.removeItem("cart");
+localStorage.removeItem("grandTotal");
+
+window.location.href =
+"categories.html";
+
+}
+
+</script>
+
+</body> 
+</html>
