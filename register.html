@@ -122,8 +122,8 @@ async function registerUser() {
 
     try {
 
-        const res = await fetch(
-            "/api/auth/register",
+       const API_URL="https://myshop-back.onrender.com"
+        const res = await fetch(`${API_URL}/api/auth/login`,
             {
                 method: "POST",
                 headers: {
