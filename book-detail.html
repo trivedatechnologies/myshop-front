@@ -1,12 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script>
+window.dataLayer = window.dataLayer || [];
+</script>
+
 <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-KVJMRR67');</script>
+<script>
+(function(w,d,s,l,i){
+    w[l]=w[l]||[];
+    w[l].push({
+        'gtm.start': new Date().getTime(),
+        event:'gtm.js'
+    });
+
+    var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),
+        dl=l!='dataLayer' ? '&l='+l : '';
+
+    j.async=true;
+    j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+
+    f.parentNode.insertBefore(j,f);
+
+})(window,document,'script','dataLayer','GTM-TSKJ4NZL');
+</script>
 <!-- End Google Tag Manager -->
 <meta charset="UTF-8">
 <title>Books</title>
@@ -123,7 +141,7 @@ line-height:1.6;
 
 <body>
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KVJMRR67"
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TSKJ4NZL"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 <div class="navbar">
@@ -131,7 +149,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div>
      <a href="checkout.html" class="nav-link">🛒 Cart(<span id="cartCount">0</span>)</a>
-     <a href="login.html" class="nav-link">🚪 Logout</a>
+     <a href="#" class="nav-link" onclick="logout()">🚪 Logout</a>
  </div>
 </div>
 
@@ -463,6 +481,14 @@ new URLSearchParams(window.location.search)
 const products =
 categories[categoryId];
 
+window.dataLayer = window.dataLayer || [];
+
+dataLayer.push({
+    event: "view_item_list",
+    category_id: categoryId,
+    total_products: products ? products.length : 0
+});    
+
 let html = "";
 
 products.forEach(product=>{
@@ -547,61 +573,67 @@ function updateCartCount() {
 
 function addToCart(product){
 
-let cart =
-JSON.parse(localStorage.getItem("cart"))
-|| [];
+    let cart =
+    JSON.parse(localStorage.getItem("cart")) || [];
 
-let existing =
-cart.find(item => item.id === product.id);
+    let existing =
+    cart.find(item => item.id === product.id);
 
-if(existing){
+    if(existing){
 
-existing.quantity++;
+        existing.quantity++;
 
-}else{
+    }else{
 
-cart.push({
+        cart.push({
+            id:product.id,
+            image:product.image,
+            name:product.name,
+            price:product.price,
+            author:product.author,
+            publisher:product.publisher,
+            pages:product.pages,
+            language:product.language,
+            quantity:1
+        });
 
-id:product.id,
-image:product.image,
-name:product.name,
-price:product.price,
-author:product.author,
-publisher:product.publisher,
-pages:product.pages,
-language:product.language,
-quantity:1
+    }
 
-});
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
 
+    window.dataLayer = window.dataLayer || [];
+
+    dataLayer.push({
+        event: "add_to_cart",
+        product_id: product.id,
+        product_name: product.name,
+        price: product.price,
+        quantity: 1
+    });
+
+    updateCartCount();
+
+    alert(product.name + " Added To Cart");
 }
-
-
-
-localStorage.setItem(
-"cart",
-JSON.stringify(cart)
-);
-dataLayer.push({
-    event: "add_to_cart",
-    product_name: product.name,
-    price: product.price
-});
 
 updateCartCount();
 function logout(){
 
     localStorage.removeItem("token");
 
-    alert("Logged Out Successfully");
+    window.dataLayer = window.dataLayer || [];
+
     dataLayer.push({
-    event: "logout"
-});
-    window.location.href =
-    "login.html";
+        event: "logout"
+    });
+
+    alert("Logged Out Successfully");
+
+    window.location.href = "login.html";
 }
-
-
 
 
 alert(product.name + " Added To Cart");
