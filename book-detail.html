@@ -1,31 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script>
-window.dataLayer = window.dataLayer || [];
-</script>
-
 <!-- Google Tag Manager -->
-<script>
-(function(w,d,s,l,i){
-    w[l]=w[l]||[];
-    w[l].push({
-        'gtm.start': new Date().getTime(),
-        event:'gtm.js'
-    });
-
-    var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),
-        dl=l!='dataLayer' ? '&l='+l : '';
-
-    j.async=true;
-    j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
-
-    f.parentNode.insertBefore(j,f);
-
-})(window,document,'script','dataLayer','GTM-TSKJ4NZL');
-</script>
-<!-- End Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TSKJ4NZL');</script>
+<!-- End Google Tag Manager -->    
 <meta charset="UTF-8">
 <title>Books</title>
 
@@ -48,6 +30,13 @@ padding:15px 30px;
 color:white;
 display:flex;
 justify-content:space-between;
+}
+.nav-link{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+    font-size:16px;
+    font-weight:500;
 }
 
 .logo{
@@ -97,16 +86,6 @@ font-weight:bold;
 color:#28a745;
 margin:10px 0;
 }
-button{
-    width:100%;
-    padding:12px;
-    border:none;
-    background:#4f46e5;
-    color:white;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:16px;
-}
 
 .btn{
 width:100%;
@@ -121,13 +100,25 @@ margin-top:10px;
 
 .btn:hover{
 background:#3730a3;
-}
-.nav-link{
+}.back-btn{
+    display:inline-block;
+    margin:20px 30px;
+    padding:10px 14px;
+    background:#4f46e5;
     color:white;
-    text-decoration:none;
-    margin-left:20px;
-    font-size:16px;
-    font-weight:500;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+.cart-count{
+    display:inline-block;
+    margin-left:8px;
+    padding:2px 8px;
+    background:white;
+    color:#4f46e5;
+    border-radius:999px;
+    font-size:14px;
+    font-weight:700;
 }
 .details{
 margin-top:10px;
@@ -148,10 +139,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="logo">My Shop</div>
 
 <div>
-     <a href="checkout.html" class="nav-link">🛒 Cart(<span id="cartCount">0</span>)</a>
-     <a href="#" class="nav-link" onclick="logout()">🚪 Logout</a>
- </div>
+  <a href="categories.html" class="nav-link">Home</a>
+  <a href="products.html" class="nav-link">Electronics</a>
+  <a href="fashion.html" class="nav-link">Fashion</a>
+  <a href="books.html" class="nav-link">Books</a>
+  <a href="home-appliances.html" class="nav-link">Home Appliances</a>
+  <a href="checkout.html" class="nav-link">🛒 Cart <span id="cartCount" class="cart-count">0</span></a>
+  <a href="#" class="nav-link" onclick="logout()">🚪 Logout</a>
 </div>
+</div>
+
+<button class="back-btn" onclick="goBack()">
+    ← Back
+</button>
 
 <div class="products" id="products"></div>
 
@@ -481,14 +481,6 @@ new URLSearchParams(window.location.search)
 const products =
 categories[categoryId];
 
-window.dataLayer = window.dataLayer || [];
-
-dataLayer.push({
-    event: "view_item_list",
-    category_id: categoryId,
-    total_products: products ? products.length : 0
-});    
-
 let html = "";
 
 products.forEach(product=>{
@@ -537,7 +529,7 @@ ${product.language}
 </div>
 
 <button class="btn"
-onclick='addToCart(${JSON.stringify(product)})'>
+onclick="addToCart(${product.id})">
 Add To Cart
 </button>
 
@@ -551,40 +543,33 @@ Add To Cart
 
 document.getElementById("products").innerHTML = html;
 
-function updateCartCount() {
+function addToCart(productId){
+    const product = products.find(item => item.id === productId);
+    if (!product) return;
+
+    window.dataLayer = window.dataLayer || [];
+
+    window.dataLayer.push({
+        event: "add_to_cart",
+        item_id: product.id,
+        item_name: product.name,
+        item_category: "Books",
+        price: product.price,
+        quantity: 1
+    });
+
+    console.log("add_to_cart fired", product.name);
 
     let cart =
     JSON.parse(localStorage.getItem("cart"))
     || [];
 
-    let totalQty = 0;
-
-    cart.forEach(item => {
-        totalQty += item.quantity || 1;
-    });
-
-    const cartCount =
-    document.getElementById("cartCount");
-
-    if(cartCount){
-        cartCount.innerText = totalQty;
-    }
-}
-
-function addToCart(product){
-
-    let cart =
-    JSON.parse(localStorage.getItem("cart")) || [];
-
     let existing =
-    cart.find(item => item.id === product.id);
+    cart.find(item => Number(item.id) === Number(product.id));
 
     if(existing){
-
-        existing.quantity++;
-
-    }else{
-
+        existing.quantity = Number(existing.quantity) + 1;
+    } else {
         cart.push({
             id:product.id,
             image:product.image,
@@ -596,56 +581,39 @@ function addToCart(product){
             language:product.language,
             quantity:1
         });
-
     }
 
     localStorage.setItem(
-        "cart",
-        JSON.stringify(cart)
+    "cart",
+    JSON.stringify(cart)
     );
 
-    window.dataLayer = window.dataLayer || [];
-
-    dataLayer.push({
-        event: "add_to_cart",
-        product_id: product.id,
-        product_name: product.name,
-        price: product.price,
-        quantity: 1
-    });
-
     updateCartCount();
-
     alert(product.name + " Added To Cart");
 }
 
-updateCartCount();
-function logout(){
-
-    localStorage.removeItem("token");
-
-    window.dataLayer = window.dataLayer || [];
-
-    dataLayer.push({
-        event: "logout"
-    });
-
-    alert("Logged Out Successfully");
-
-    window.location.href = "login.html";
+function updateCartCount(){
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const count = cart.reduce((sum,item)=> sum + (Number(item.quantity) || 0), 0);
+    document.querySelectorAll('#cartCount, .cart-count').forEach(el => el.innerText = count);
 }
 
 function goBack(){
-    window.history.back();
+    if (history.length > 1) {
+        history.back();
+    } else {
+        window.location.href = 'categories.html';
+    }
 }
-window.addEventListener("pageshow", function () {
-    updateCartCount();
-});
 
+updateCartCount();
+
+function logout(){
+    localStorage.removeItem("token");
+    alert("Logged Out Successfully");
+    window.location.href = "login.html";
+}
 </script>
-<button class="back-btn" onclick="goBack()">
-    ← Back
-</button>
 
 </body>
 </html>
